@@ -6,7 +6,7 @@ import * as http from "http";
 import * as winston from "winston";
 import * as expressWinston from "express-winston";
 //cross origin resource sharing
-import * as cors from "cors";
+//import * as cors from "cors";
 import { CommonRoutesConfig } from "./common/common.routes.config";
 import { OrdersRoutes } from "./orders/orders.routes.config";
 import Debug from "debug";

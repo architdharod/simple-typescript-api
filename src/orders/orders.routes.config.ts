@@ -1,4 +1,6 @@
 import { CommonRoutesConfig } from "../common/common.routes.config";
+import ordersController from "./controllers/orders.controller";
+import ordersMiddleware from "./middleware/orders.middleware";
 import express from "express";
 
 export class OrdersRoutes extends CommonRoutesConfig {
@@ -9,21 +11,16 @@ export class OrdersRoutes extends CommonRoutesConfig {
   configureRoutes(): express.Application {
     this.app
       .route("/OrderStatus/:orderNumber")
-      .all(
-        (
-          req: express.Request,
-          res: express.Response,
-          next: express.NextFunction
-        ) => {
-          //place for middleware.
-          next();
-        }
-      )
-      .get((req: express.Request, res: express.Response) => {
-        res
-          .status(200)
-          .send(`GET requested for order ${req.params.orderNumber}`);
-      });
+      .get(
+        ordersMiddleware.validateOrderExists,
+        ordersController.getOrderByOrderNumber);
+
+    this.app
+      .route("/Create")
+      .post(
+        ordersMiddleware.validateRequiredOrdersBodyFields,
+        ordersController.createOrder
+      );
 
     return this.app;
   }
